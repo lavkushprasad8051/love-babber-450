@@ -1,4 +1,5 @@
 1 Friends Pairing Problem 
+https://www.youtube.com/watch?v=yacYeZYOYPU
 Input:N = 3
 Output: 4
 Explanation:
@@ -27,3 +28,129 @@ public:
     }
 };    
  
+
+
+2 Gold Mine Problem
+https://www.youtube.com/watch?v=hs0lilfJ7C0
+Input : mat[][] = {{1, 3, 3},
+                   {2, 1, 4},
+                  {0, 6, 4}};
+Output : 12 
+{(1,0)->(2,1)->(2,2)}
+int getMaxGold(int gold[][MAX], int m, int n) 
+{ 
+    // Create a table for storing intermediate results 
+    // and initialize all cells to 0. The first row of 
+    // goldMineTable gives the maximum gold that the miner 
+    // can collect when starts that row 
+    int goldTable[m][n]; 
+    memset(goldTable, 0, sizeof(goldTable)); 
+  
+    for (int col=n-1; col>=0; col--) 
+    { 
+        for (int row=0; row<m; row++) 
+        { 
+            // Gold collected on going to the cell on the right(->) 
+            int right = (col==n-1)? 0: goldTable[row][col+1]; 
+  
+            // Gold collected on going to the cell to right up (/) 
+            int right_up = (row==0 || col==n-1)? 0: 
+                            goldTable[row-1][col+1]; 
+  
+            // Gold collected on going to the cell to right down (\) 
+            int right_down = (row==m-1 || col==n-1)? 0: 
+                             goldTable[row+1][col+1]; 
+  
+            // Max gold collected from taking either of the 
+            // above 3 paths 
+            goldTable[row][col] = gold[row][col] + 
+                              max(right, max(right_up, right_down)); 
+                                                      
+        } 
+    } 
+  
+    // The max amount of gold collected will be the max 
+    // value in first column of all rows 
+    int res = goldTable[0][0]; 
+    for (int i=1; i<m; i++) 
+        res = max(res, goldTable[i][0]); 
+    return res; 
+} 
+
+
+
+3 Painting the Fence 
+https://www.youtube.com/watch?v=ju8vrEAsa3Q
+Medium Accuracy: 29.37% Submissions: 1267 Points: 4
+Given a fence with n posts and k colors, find out the number of ways of painting the fence such that at most 2 adjacent posts have the same color. Since answer can be large return it modulo 10^9 + 7.
+
+
+Example 1:
+
+Input:
+N=3,  K=2 
+Output: 6
+Explanation: We have following possible combinations:
+ 
+
+Example 2:
+
+Input:
+N=2,  K=4
+Output: 16
+class Solution{
+    public:
+    long long int mod=1000000007;
+    long long countWays(int n, int k){
+        // code here
+        if(n==1)
+        {
+            return k%mod;
+        }
+       long long int same=k*1%mod;
+        long long int diff=k*(k-1)%mod;
+        long long int total=(same+diff)%mod;
+        for(long long int i=3;i<=n;i++)
+        {
+            same=(diff%mod);
+            diff=(total%mod)*((k-1)%mod);
+            total=(same%mod)+(diff%mod);
+        }
+        return total%mod;
+    }
+    
+    
+    
+    
+    
+    
+ 4  Maximize The Cut Segments 
+
+
+Example 1:
+
+Input:
+N = 4
+x = 2, y = 1, z = 1
+Output: 4
+Explanation:Total length is 4, and the cut
+lengths are 2, 1 and 1.  We can make
+maximum 4 segments each of length 1.
+
+int maximizeTheCuts(int n, int a, int b, int c)
+{
+    //Your code hereint 
+ int dp[n+1];
+    dp[0]=0;
+    
+    for(int i=1;i<=n;i++)
+    {
+        dp[i]=-1;
+        if(i-a>=0) dp[i]=max(dp[i],dp[i-a]);
+        if(i-b>=0) dp[i]=max(dp[i],dp[i-b]);
+        if(i-c>=0) dp[i]=max(dp[i],dp[i-c]);
+        if(dp[i]!=-1) dp[i]++;
+    }
+    return max(dp[n],0);
+}
+  
